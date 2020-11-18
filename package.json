@@ -1,0 +1,31 @@
+{
+  "name": "koa-restapi",
+  "version": "1.0.0",
+  "description": "build rest api using koa js, sequelize orm, postgree,mongod db",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "author": "aliwildan",
+  "license": "ISC",
+  "dependencies": {
+    "@koa/cors": "^3.1.0",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^8.2.0",
+    "http-status-codes": "^2.1.4",
+    "joi": "^17.3.0",
+    "jsonwebtoken": "^8.5.1",
+    "koa": "^2.13.0",
+    "koa-bodyparser": "^4.3.0",
+    "koa-logger": "^3.2.1",
+    "koa-router": "^10.0.0",
+    "pg": "^8.5.1",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^6.3.5"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6",
+    "sequelize-cli": "^6.2.0"
+  }
+}
