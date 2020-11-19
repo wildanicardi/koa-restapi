@@ -1,6 +1,6 @@
 const Joi = require("joi");
 const {
-  User
+  User,Post
 } = require("../models");
 const {
   StatusCodes
@@ -51,3 +51,10 @@ exports.findByCredentials = async ({
   }
   return user;
 };
+exports.postValidation = data => {
+  const schema = Joi.object({
+    description: Joi.string().min(8).required(),
+    title: Joi.string().required()
+  });
+  return schema.validate(data);
+}

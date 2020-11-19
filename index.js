@@ -4,8 +4,10 @@ const Logger = require('koa-logger');
 const bodyParser = require("koa-bodyparser");
 const cors = require('@koa/cors');
 const dotenv = require("dotenv");
+
 // import route
 const authRoute = require("./routes/auth");
+const postRoute = require("./routes/post");
 dotenv.config();
 const app = new Koa();
 app.use(Logger());
@@ -13,15 +15,16 @@ app.use(cors());
 app.use(bodyParser());
 // Define PORT
 const PORT = process.env.PORT || 8080;
-const router = new Router();
+// const router = new Router();
 
-router.get('/',async (ctx) => {
-  ctx.body = "Hello World"
-});
+// router.get('/',async (ctx) => {
+//   ctx.body = "Hello World"
+// });
 
-// Add routes and response to the OPTIONS requests
-app.use(router.routes()).use(router.allowedMethods());
+// // Add routes and response to the OPTIONS requests
+// app.use(router.routes()).use(router.allowedMethods());
 app.use(authRoute.routes());
+app.use(postRoute.routes());
 app.on('error', (err, ctx) => {
   console.log('server error', err, ctx)
 });

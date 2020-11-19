@@ -13,6 +13,7 @@ const jwt = require("jsonwebtoken");
 const {
   StatusCodes
 } =require('http-status-codes');
+const secret =  process.env.TOKEN_SECRET || "secret"
 
 exports.registerUser = async(ctx) => {
   const {
@@ -104,7 +105,7 @@ exports.login  = async (ctx) => {
     const token = jwt.sign({
         id: user.id,
       },
-      process.env.TOKEN_SECRET
+      secret
     );
     ctx.status = StatusCodes.OK;
     return ctx.body = {

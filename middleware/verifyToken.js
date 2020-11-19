@@ -1,19 +1,20 @@
 const jwt = require('jsonwebtoken');
-exports.auth = (ctx, next) => {
-  const token = ctx.req.headers.authorization.split(" ")[1];
-  if (!token) 
-  ctx.status = 401;
-  ctx.body = {
-    message: 'Acces Denied'
-  };
+const secret = process.env.TOKEN_SECRET || "secret"
+exports.auth = async (ctx,next) => {
+  const token = await ctx.headers.authorization.split(" ")[1];
+  if (!token) {
+    ctx.status = 401;
+    return ctx.body = {
+      message: 'Acces Denied'
+    };
+  } 
   try {
-    const verified = jwt.verify(token, process.env.TOKEN_SECRET);
-    ctx.request.user = verified;
-    next();
+    ctx.request.user = jwt.verify(token, secret);
+    await next();
   } catch (error) {
     ctx.status = 400;
-    ctx.body = {
-      message: 'Invalid Token'
+    return ctx.body = {
+      message: error.message
     };
   }
 }
