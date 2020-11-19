@@ -13,6 +13,7 @@
     "@koa/cors": "^3.1.0",
     "bcryptjs": "^2.4.3",
     "crypto": "^1.0.1",
+    "dayjs": "^1.9.6",
     "dotenv": "^8.2.0",
     "http-status-codes": "^2.1.4",
     "joi": "^17.3.0",

@@ -8,6 +8,7 @@ const dotenv = require("dotenv");
 // import route
 const authRoute = require("./routes/auth");
 const postRoute = require("./routes/post");
+const comentarRoute = require("./routes/comentar");
 dotenv.config();
 const app = new Koa();
 app.use(Logger());
@@ -25,6 +26,7 @@ const PORT = process.env.PORT || 8080;
 // app.use(router.routes()).use(router.allowedMethods());
 app.use(authRoute.routes());
 app.use(postRoute.routes());
+app.use(comentarRoute.routes());
 app.on('error', (err, ctx) => {
   console.log('server error', err, ctx)
 });

@@ -58,3 +58,9 @@ exports.postValidation = data => {
   });
   return schema.validate(data);
 }
+exports.comentarValidation = data => {
+  const schema = Joi.object({
+    comentar: Joi.string().required()
+  });
+  return schema.validate(data);
+}

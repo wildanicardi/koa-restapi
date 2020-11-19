@@ -113,3 +113,23 @@ exports.postDelete = async(ctx) => {
     };
   }
 }
+
+exports.postDetail = async(ctx) => {
+  const {id} = ctx.request.params;
+  try {
+    const post = await Post.findOne({
+      where:{id:id},
+      include:["comentar"]
+    });
+    ctx.status = StatusCodes.OK;
+    return ctx.body = {
+      status:"success",
+      data: post,
+    };
+  } catch (error) {
+    ctx.status = StatusCodes.BAD_REQUEST;
+    return ctx.body = {
+      message: error.message,
+    };
+  }
+}
