@@ -1,21 +1,19 @@
 const jwt = require('jsonwebtoken');
-const {
-  StatusCodes
-} =require('http-status-codes');
-exports.auth = (req, res, next) => {
-  const token = req.headers.authorization.split(" ")[1];
-  if (!token) return res.status(StatusCodes.UNAUTHORIZED).json({
-    status: 401,
+exports.auth = (ctx, next) => {
+  const token = ctx.req.headers.authorization.split(" ")[1];
+  if (!token) 
+  ctx.status = 401;
+  ctx.body = {
     message: 'Acces Denied'
-  });
+  };
   try {
     const verified = jwt.verify(token, process.env.TOKEN_SECRET);
-    req.user = verified;
+    ctx.request.user = verified;
     next();
   } catch (error) {
-    res.status(StatusCodes.BAD_REQUEST).json({
-      status: 400,
+    ctx.status = 400;
+    ctx.body = {
       message: 'Invalid Token'
-    });
+    };
   }
 }

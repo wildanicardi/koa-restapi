@@ -3,7 +3,10 @@ const Router = require('koa-router');
 const Logger = require('koa-logger');
 const bodyParser = require("koa-bodyparser");
 const cors = require('@koa/cors');
-
+const dotenv = require("dotenv");
+// import route
+const authRoute = require("./routes/auth");
+dotenv.config();
 const app = new Koa();
 app.use(Logger());
 app.use(cors());
@@ -18,8 +21,9 @@ router.get('/',async (ctx) => {
 
 // Add routes and response to the OPTIONS requests
 app.use(router.routes()).use(router.allowedMethods());
+app.use(authRoute.routes());
 app.on('error', (err, ctx) => {
-  log.error('server error', err, ctx)
+  console.log('server error', err, ctx)
 });
 // Listen the port
 app.listen(PORT, () => {
