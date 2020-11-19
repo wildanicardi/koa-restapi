@@ -62,9 +62,9 @@ exports.registerUser = async(ctx) => {
     });
    await mailService(email,username,token);
    ctx.status = StatusCodes.OK;
-   ctx.body = {
+   return ctx.body = {
       status: "success",
-      "message":"berhasil terdaftar"
+      "message":"Register Success"
     };
   } catch (error) {
     ctx.status = StatusCodes.BAD_REQUEST;
@@ -75,13 +75,13 @@ exports.registerUser = async(ctx) => {
 }
 exports.login  = async (ctx) => {
   const {
-    username,
+    email,
     password
   } = ctx.request.body;
   const {
     error
   } = loginValidation({
-    username,
+    email,
     password,
   });
   if (error){
@@ -92,29 +92,29 @@ exports.login  = async (ctx) => {
   }
   try {
     const user = await findByCredentials({
-      username,
+      email,
       password,
     });
+    if(!user.isVerified){
+      ctx.status= StatusCodes.BAD_REQUEST;
+      return ctx.body = {
+        "message":"User is not Verification"
+      };
+    }
     const token = jwt.sign({
         id: user.id,
       },
       process.env.TOKEN_SECRET
     );
-    const id = await setUserId(user.id)
-    const data = {
-      id : id,
-      nama : user.nama,
-      username : user.username,
-      token:token
-    }
     ctx.status = StatusCodes.OK;
-    ctx.body = {
-      satus:"success",
-      data: data,
+    return ctx.body = {
+      status: "success",
+      "message":"Login Success",
+      token:token
     };
   } catch (error) {
     ctx.status = StatusCodes.BAD_REQUEST;
-    ctx.body = {
+    return ctx.body = {
       message: error.message,
     } ;
   }
@@ -122,7 +122,7 @@ exports.login  = async (ctx) => {
 exports.verifyEmail = async(ctx) => {
   const {email,token} = ctx.request.query;
   const user = await User.findOne({
-    where:{email}
+    where:{email:email}
   });
   if(user.isVerified){
     ctx.status = 202;
@@ -132,10 +132,16 @@ exports.verifyEmail = async(ctx) => {
   }
   try {
     const verifyToken = await VerificationToken.findOne({
-      where:{token}
+      where:{token:token}
     });
     if(verifyToken){
-      await User.update({isVerified:true});
+      await User.update({
+        isVerified:true
+      },{
+        where:{
+        id:user.id
+      }
+      });
     }
     ctx.status = 200;
     return ctx.body = {

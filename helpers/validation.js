@@ -20,34 +20,33 @@ exports.registerValidation = data => {
 //validation login
 exports.loginValidation = data => {
   const schema = Joi.object({
-    username: Joi.string()
-      .min(6)
+    email: Joi.string()
       .required(),
     password: Joi.string().required()
   });
   return schema.validate(data);
 };
 exports.findByCredentials = async ({
-  username,
+  email,
   password
 }) => {
 
   const user = await User.findOne({
     where: {
-      username: username
+      email: email
     }
   });
   if (!user) {
     return res.status(StatusCodes.BAD_REQUEST).json({
       status: 400,
-      message: "username salah"
+      message: "email is wrong"
     });
   }
   const validPass = await bcrypt.compare(password, user.password);
   if (!validPass) {
     return res.status(StatusCodes.BAD_REQUEST).json({
       status: 400,
-      message: "Password salah"
+      message: "Password is Wrong"
     });
   }
   return user;
