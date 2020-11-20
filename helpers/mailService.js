@@ -27,3 +27,31 @@ exports.mailService = (to,nama,token) => {
     }
   });
 }
+
+exports.sendEmailNotification = async (to,name,type,by) => {
+  const transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port:'465',
+    auth: {
+      user: 'aliwildan12@gmail.com',
+      pass: '@intermilan' // naturally, replace both with your real credentials or an application-specific password
+    },
+    // debug: true, // show debug output
+    // logger: true // log information in console
+  });
+  const text = (type === "comentar") ? `Your posts are commented on by ${by}` : `Your posts are liked on by ${by}`
+  const mailOptions = {
+    from: 'aliwildan12@gmail.com',
+    to: to,
+    subject: `Hello ${name}`,
+    text: text
+  };
+  
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+    console.log(error.message);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  });
+}

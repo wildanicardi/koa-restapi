@@ -1,7 +1,7 @@
-const {Comentar,ReplyComentar} = require('../models');
+const {User,Post, Comentar,ReplyComentar} = require('../models');
 const {comentarValidation,replyValidation} = require('../helpers/validation');
 const { StatusCodes } =require('http-status-codes');
-
+const {sendEmailNotification} = require('../helpers/mailService');
 exports.createComentar = async (ctx) => {
   const {comentar} = ctx.request.body;
   const {idPost} = ctx.request.params;
@@ -17,6 +17,18 @@ exports.createComentar = async (ctx) => {
     const data = await Comentar.create({
       comentar,userId:userId,postId:idPost
     });
+    const user = await User.findOne({
+      where:{
+        id:userId
+      }
+    });
+    const post = await Post.findOne({
+      where:{
+        id:idPost
+      },
+      include:["user"]
+    });
+    await sendEmailNotification(post.user.email,post.user.username,"comentar",user.username)
     ctx.status = StatusCodes.OK;
     return ctx.body = {
       status:"created success",
