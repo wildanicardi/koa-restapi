@@ -5,15 +5,15 @@ exports.mailService = (to,nama,token) => {
     host: 'smtp.gmail.com',
     port:'465',
     auth: {
-      user: 'aliwildan12@gmail.com',
-      pass: '@intermilan' // naturally, replace both with your real credentials or an application-specific password
+      user: 'farhanahgatneh29@gmail.com',
+      pass: '@gopaanjaya1'// naturally, replace both with your real credentials or an application-specific password
     },
     // debug: true, // show debug output
     // logger: true // log information in console
   });
   
   const mailOptions = {
-    from: 'aliwildan12@gmail.com',
+    from: 'farhanahgatneh29@gmail.com',
     to: to,
     subject: `Hello ${nama}`,
     text: `Your Email verification token ${token}`
@@ -33,14 +33,14 @@ exports.sendEmailNotification = async (to,name,text) => {
     host: 'smtp.gmail.com',
     port:'465',
     auth: {
-      user: 'aliwildan12@gmail.com',
-      pass: '@intermilan' // naturally, replace both with your real credentials or an application-specific password
+      user: 'farhanahgatneh29@gmail.com',
+      pass: '@gopaanjaya1' // naturally, replace both with your real credentials or an application-specific password
     },
     // debug: true, // show debug output
     // logger: true // log information in console
   });
   const mailOptions = {
-    from: 'aliwildan12@gmail.com',
+    from: 'farhanahgatneh29@gmail.com',
     to: to,
     subject: `Hello ${name}`,
     text: text

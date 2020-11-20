@@ -140,14 +140,20 @@ exports.verifyEmail = async(ctx) => {
         isVerified:true
       },{
         where:{
-        id:user.id
+        id:verifyToken.userId
       }
       });
+      ctx.status = 200;
+      return ctx.body = {
+        message:"Verification Success"
+      }
+    }else{
+      ctx.status = 400;
+      return ctx.body = {
+        message:"Verification Failed, Token Is not valid"
+      }
     }
-    ctx.status = 200;
-    return ctx.body = {
-      message:"Verification Success"
-    }
+   
   } catch (error) {
     ctx.status = 404;
     return ctx.body = {
