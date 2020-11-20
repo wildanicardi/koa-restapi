@@ -63,7 +63,10 @@ exports.dislikePost = async(ctx) => {
 }
 const likedPost = async (userId,liked,idPost) => {
   const like = await Like.findOne({
-    where:{postId:idPost}
+    where:{
+      postId:idPost,
+      userId:userId
+    }
   });
   if (like) {
     await Like.update({
