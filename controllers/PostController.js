@@ -163,14 +163,13 @@ exports.filterPost = async(ctx) => {
   const {title} = ctx.request.query;
   try {
     let post = await Post.findAll({
+      include: ["user"],
       where:{
         title:{
           [Op.iLike]:`%${title}%`
         }
       },
-      order:[
-        ["createdAt",'DESC']
-      ]
+      order:[['user','username', 'DESC']]
     });
     ctx.status = StatusCodes.OK;
     return ctx.body = {
