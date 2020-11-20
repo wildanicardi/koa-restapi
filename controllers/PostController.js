@@ -159,3 +159,29 @@ exports.searchTitle = async(ctx) => {
   }
  
 }
+exports.filterPost = async(ctx) => {
+  const {title} = ctx.request.query;
+  try {
+    let post = await Post.findAll({
+      where:{
+        title:{
+          [Op.iLike]:`%${title}%`
+        }
+      },
+      order:[
+        ["createdAt",'DESC']
+      ]
+    });
+    ctx.status = StatusCodes.OK;
+    return ctx.body = {
+      status:"success",
+      data: post,
+    };
+  } catch (error) {
+    ctx.status = StatusCodes.BAD_REQUEST;
+    return ctx.body = {
+      message: error.message,
+    };
+  }
+ 
+}
