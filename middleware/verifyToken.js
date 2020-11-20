@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const secret = process.env.TOKEN_SECRET || "secret"
+const secret = "secret";
 exports.auth = async (ctx,next) => {
   const token = await ctx.headers.authorization.split(" ")[1];
   if (!token) {

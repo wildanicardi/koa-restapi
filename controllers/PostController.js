@@ -1,6 +1,8 @@
 const {Post} = require('../models');
 const {postValidation} = require('../helpers/validation');
 const { StatusCodes } =require('http-status-codes');
+const Sequelize = require('sequelize');
+const Op = Sequelize.Op;
 
 exports.postStore = async (ctx) => {
   const {title,description} = ctx.request.body;
@@ -132,4 +134,28 @@ exports.postDetail = async(ctx) => {
       message: error.message,
     };
   }
+}
+
+exports.searchTitle = async(ctx) => {
+  const {title} = ctx.request.query;
+  try {
+    let post = await Post.findAll({
+      where:{
+        title:{
+          [Op.iLike]:`%${title}%`
+        }
+      }
+    });
+    ctx.status = StatusCodes.OK;
+    return ctx.body = {
+      status:"success",
+      data: post,
+    };
+  } catch (error) {
+    ctx.status = StatusCodes.BAD_REQUEST;
+    return ctx.body = {
+      message: error.message,
+    };
+  }
+ 
 }
