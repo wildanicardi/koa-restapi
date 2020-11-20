@@ -28,7 +28,8 @@ exports.createComentar = async (ctx) => {
       },
       include:["user"]
     });
-    await sendEmailNotification(post.user.email,post.user.username,"comentar",user.username)
+    const text = `Your posts are commented on by ${user.username}`;
+    await sendEmailNotification(post.user.email,post.user.username,text);
     ctx.status = StatusCodes.OK;
     return ctx.body = {
       status:"created success",
@@ -56,6 +57,19 @@ exports.replyComentar = async(ctx) => {
     const data = await ReplyComentar.create({
       reply,userId:userId,comentarId:idComentar
     });
+    const user = await User.findOne({
+      where:{
+        id:userId
+      }
+    });
+    const comentar = await Comentar.findOne({
+      where:{
+        id:idComentar
+      },
+      include:["user"]
+    })
+    const text = `Your commentar are replied on by ${user.username}`;
+    await sendEmailNotification(comentar.user.email,comentar.user.username,text)
     ctx.status = StatusCodes.OK;
     return ctx.body = {
       status:"created success",

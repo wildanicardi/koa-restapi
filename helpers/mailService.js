@@ -28,7 +28,7 @@ exports.mailService = (to,nama,token) => {
   });
 }
 
-exports.sendEmailNotification = async (to,name,type,by) => {
+exports.sendEmailNotification = async (to,name,text) => {
   const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port:'465',
@@ -39,7 +39,6 @@ exports.sendEmailNotification = async (to,name,type,by) => {
     // debug: true, // show debug output
     // logger: true // log information in console
   });
-  const text = (type === "comentar") ? `Your posts are commented on by ${by}` : `Your posts are liked on by ${by}`
   const mailOptions = {
     from: 'aliwildan12@gmail.com',
     to: to,
