@@ -1,4 +1,4 @@
-const {Post} = require('../models');
+const {Post,Comentar} = require('../models');
 const {postValidation} = require('../helpers/validation');
 const { StatusCodes } =require('http-status-codes');
 const Sequelize = require('sequelize');
@@ -163,13 +163,20 @@ exports.filterPost = async(ctx) => {
   const {title} = ctx.request.query;
   try {
     let post = await Post.findAll({
-      include: ["user"],
+      attributes: {
+        include: [[Sequelize.fn('COUNT', Sequelize.col('comentar.id')), 'comentarCount']],
+      },
+      include:[{
+        model:Comentar,
+        as:'comentar',
+        attributes:[]
+      }],
       where:{
         title:{
           [Op.iLike]:`%${title}%`
         }
       },
-      order:[['user','username', 'DESC']]
+      group: ['Post.id']
     });
     ctx.status = StatusCodes.OK;
     return ctx.body = {
