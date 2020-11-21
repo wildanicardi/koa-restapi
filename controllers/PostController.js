@@ -159,47 +159,20 @@ exports.searchTitle = async(ctx) => {
   }
  
 }
-exports.filterPostComentar = async(ctx) => {
-  const {title} = ctx.request.query;
-  try {
-    let post = await Post.findAll({
-      attributes: {
-        include: [[Sequelize.fn('COUNT', Sequelize.col('comentar.id')), 'comentarCount']],
-      },
-      include:[{
-        model:Comentar,
-        as:'comentar',
-        attributes:[]
-      }],
-      where:{
-        title:{
-          [Op.iLike]:`%${title}%`
-        }
-      },
-      group: ['Post.id']
-    });
-    ctx.status = StatusCodes.OK;
-    return ctx.body = {
-      status:"success",
-      data: post,
-    };
-  } catch (error) {
-    ctx.status = StatusCodes.BAD_REQUEST;
-    return ctx.body = {
-      message: error.message,
-    };
-  }
- 
-}
 exports.shortPost = async(ctx) => {
-  const {sort_by,order_by} = ctx.request.query;
+  const {sort_by,order_by,title} = ctx.request.query;
   console.log("sort",sort_by);
   console.log("order",order_by);
   try {
     if (sort_by === 'username') {
       const post = await Post.findAll({
         include:['comentar','user'],
-        order:[["user",sort_by,order_by]]
+        order:[["user",sort_by,order_by]],
+        where:{
+          title:{
+            [Op.iLike]:`%${title}%`
+          }
+        }
       });
       ctx.status = StatusCodes.OK;
       return ctx.body = {
@@ -209,7 +182,12 @@ exports.shortPost = async(ctx) => {
     } else {
       const post = await Post.findAll({
         include:['comentar','user'],
-        order:[[sort_by,order_by]]
+        order:[[sort_by,order_by]],
+        where:{
+          title:{
+            [Op.iLike]:`%${title}%`
+          }
+        }
       });
       ctx.status = StatusCodes.OK;
       return ctx.body = {

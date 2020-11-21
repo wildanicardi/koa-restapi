@@ -7,7 +7,6 @@ router.get("/api/posts",auth,postIndex);
 router.post("/api/post",auth,postStore);
 router.get("/api/post/search",auth,searchTitle);
 router.get("/api/post/filter",auth,shortPost);
-router.get("/api/post/filter/komentar",auth,filterPostComentar);
 router.get("/api/post/:id",auth,postDetail);
 router.put("/api/post/:id",auth,postUpdate);
 router.delete("/api/post/:id",auth,postDelete);
