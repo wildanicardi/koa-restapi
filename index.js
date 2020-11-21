@@ -4,11 +4,9 @@ const Logger = require('koa-logger');
 const bodyParser = require("koa-bodyparser");
 const cors = require('@koa/cors');
 const dotenv = require("dotenv");
-const mongoose = require('mongoose');
 const Logging = require('./models/logging');
 dotenv.config();
-const node_env = process.env.NODE_ENV || 'development';
-const mongoConfig = require('./config/mongo.json')[node_env];
+
 
 // import route
 const authRoute = require("./routes/auth");
@@ -20,35 +18,9 @@ const likeRoute = require("./routes/like");
 const PORT = process.env.PORT || 8080;
 const app = new Koa();
 
-const productionUrl = process.env[mongoConfig.mongo_db_uri_production];
-const localUrl = `mongodb://${mongoConfig.host}:27017/${mongoConfig.database}`
-const mongoUrl = productionUrl ? productionUrl : localUrl
-// mongo db connect
-mongoose.connect(mongoUrl, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true, 
-  useFindAndModify: false,
-  useCreateIndex: true
-}).then(() => {
-  console.log("Connected to the database!");
-}).catch((err) => {
-  console.log("Cannot connect to the database!", err);
-  process.exit();
-});
 
-app.use(Logger((str,args) => { 
-  // console.log("response",args);
-  Logging.create({
-      path:args[2],
-      method:args[1],
-      ttl:args[4],
-      response:args[3]
-  }).then(() => {
-    console.log("save logging success");
-  }).catch((err) => {
-    console.log("error save logging " , err.message);
-  });
-}));
+
+app.use(Logger());
 app.use(cors());
 app.use(bodyParser());
 
