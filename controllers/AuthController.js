@@ -83,19 +83,33 @@ exports.login  = async (ctx) => {
     error
   } = loginValidation({
     email,
-    password,
+    password
   });
   if (error){
-    ctx.status= StatusCodes.BAD_REQUEST;
-    ctx.body = {
-      message: error.message,
+    ctx.status = StatusCodes.BAD_REQUEST;
+    return ctx.body = {
+        message: error.message,
     };
   }
-  try {
-    const user = await findByCredentials({
-      email,
-      password,
-    });
+  const user = await User.findOne({
+    where: {
+      email: email
+    }
+  });
+  if (!user) {
+    ctx.status = StatusCodes.BAD_REQUEST;
+    return ctx.body = {
+      message: "email is wrong"
+    };
+  }
+  const validPass = await bcrypt.compare(password, user.password);
+  if (!validPass) {
+    ctx.status = StatusCodes.BAD_REQUEST;
+    return ctx.body = {
+      message: "Password is Wrong"
+    };
+  }
+  try { 
     if(!user.isVerified){
       ctx.status= StatusCodes.BAD_REQUEST;
       return ctx.body = {

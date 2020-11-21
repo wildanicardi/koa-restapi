@@ -26,31 +26,6 @@ exports.loginValidation = data => {
   });
   return schema.validate(data);
 };
-exports.findByCredentials = async (ctx,{
-  email,
-  password
-}) => {
-
-  const user = await User.findOne({
-    where: {
-      email: email
-    }
-  });
-  if (!user) {
-    ctx.status = StatusCodes.BAD_REQUEST;
-    return ctx.body = {
-      message: "email is wrong"
-    };
-  }
-  const validPass = await bcrypt.compare(password, user.password);
-  if (!validPass) {
-    ctx.status = StatusCodes.BAD_REQUEST;
-    return ctx.body = {
-      message: "Password is Wrong"
-    };
-  }
-  return user;
-};
 exports.postValidation = data => {
   const schema = Joi.object({
     description: Joi.string().min(8).required(),
