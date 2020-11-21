@@ -14,10 +14,10 @@
     "dialect": "postgres"
   },
   "production": {
-    "username": "postgres",
-    "password": "okerapopo",
-    "database": "koa_restapi",
-    "host": "127.0.0.1",
+    "username": "qnorcannsjafei",
+    "password": "e293a1ac9ba15b66039b4896ddc7c7c142beb486d63fd1555d998d1b07f96bda",
+    "database": "df874tu2792o2d",
+    "host": "ec2-54-88-130-244.compute-1.amazonaws.com",
     "dialect": "postgres"
   }
 }
