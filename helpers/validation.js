@@ -29,7 +29,7 @@ exports.loginValidation = data => {
 exports.findByCredentials = async ({
   email,
   password
-}) => {
+},ctx) => {
 
   const user = await User.findOne({
     where: {
