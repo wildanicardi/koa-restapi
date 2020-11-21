@@ -5,8 +5,9 @@ exports.mailService = (to,nama,token) => {
     host: 'smtp.gmail.com',
     port:'465',
     auth: {
+      type: 'OAuth2',
       user: 'farhanahgatneh29@gmail.com',
-      pass: '@gopaanjaya1'// naturally, replace both with your real credentials or an application-specific password
+      accessToken: 'ya29.a0AfH6SMD_pLZATkSnTgJIrvZfylrqHOvlkspf-vRNLWW4877tQ2Hv_7L-8OUfMBDk1yfokrNniHoeZz3Eade40NPCmQKeLNEoRY0B_vpL4IZ5Kq1DQ5wTBjRZozWPC_lA6OvLOl8hfvUq_-EN6L0egYMOyL36Mn0TJSinqHDwODs'// naturally, replace both with your real credentials or an application-specific password
     },
     // debug: true, // show debug output
     // logger: true // log information in console
