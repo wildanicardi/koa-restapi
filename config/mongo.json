@@ -1,0 +1,9 @@
+{
+  "development":{
+    "database":"logging",
+    "host":"localhost"
+  },
+  "production":{
+    "mongo_db_uri_production":"MONGODB_URI"
+  }
+}

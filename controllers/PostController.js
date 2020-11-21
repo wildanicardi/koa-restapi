@@ -1,4 +1,4 @@
-const {Post,Comentar} = require('../models');
+const {Post,Comentar,User} = require('../models');
 const {postValidation} = require('../helpers/validation');
 const { StatusCodes } =require('http-status-codes');
 const Sequelize = require('sequelize');
@@ -166,7 +166,15 @@ exports.shortPost = async(ctx) => {
   try {
     if (sort_by === 'username') {
       const post = await Post.findAll({
-        include:['comentar','user'],
+        include:[{
+          model:Comentar,
+          as:'comentar',
+          attributes:{exclude:["createdAt","updatedAt"]}
+        },{
+          model:User,
+          as:'user',
+          attributes:{exclude:["createdAt","updatedAt","password"]}
+        }],
         order:[["user",sort_by,order_by]],
         where:{
           title:{
@@ -181,7 +189,15 @@ exports.shortPost = async(ctx) => {
       };
     } else {
       const post = await Post.findAll({
-        include:['comentar','user'],
+        include:[{
+          model:Comentar,
+          as:'comentar',
+          attributes:{exclude:["createdAt","updatedAt"]}
+        },{
+          model:User,
+          as:'user',
+          attributes:{exclude:["createdAt","updatedAt","password"]}
+        }],
         order:[[sort_by,order_by]],
         where:{
           title:{
