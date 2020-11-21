@@ -26,10 +26,10 @@ exports.loginValidation = data => {
   });
   return schema.validate(data);
 };
-exports.findByCredentials = async ({
+exports.findByCredentials = async (ctx,{
   email,
   password
-},ctx) => {
+}) => {
 
   const user = await User.findOne({
     where: {
@@ -37,15 +37,15 @@ exports.findByCredentials = async ({
     }
   });
   if (!user) {
+    ctx.status = StatusCodes.BAD_REQUEST;
     return ctx.body = {
-      status:StatusCodes.BAD_REQUEST,
       message: "email is wrong"
     };
   }
   const validPass = await bcrypt.compare(password, user.password);
   if (!validPass) {
+    ctx.status = StatusCodes.BAD_REQUEST;
     return ctx.body = {
-      status:StatusCodes.BAD_REQUEST,
       message: "Password is Wrong"
     };
   }
