@@ -37,17 +37,17 @@ exports.findByCredentials = async ({
     }
   });
   if (!user) {
-    return res.status(StatusCodes.BAD_REQUEST).json({
-      status: 400,
+    ctx.status = StatusCodes.BAD_REQUEST;
+    return ctx.body={
       message: "email is wrong"
-    });
+    };
   }
   const validPass = await bcrypt.compare(password, user.password);
   if (!validPass) {
-    return res.status(StatusCodes.BAD_REQUEST).json({
-      status: 400,
+    ctx.status =StatusCodes.BAD_REQUEST;
+      return ctx.body={
       message: "Password is Wrong"
-    });
+    };
   }
   return user;
 };
