@@ -1,6 +1,6 @@
 const Koa = require('koa');
-// const Logger = require('koa-logger');
-var requests = require('koa-log-requests');
+const Logger = require('koa-logger');
+// var requests = require('koa-log-requests');
 const bodyParser = require("koa-bodyparser");
 const cors = require('@koa/cors');
 const dotenv = require("dotenv");
@@ -15,15 +15,19 @@ dotenv.config();
 // Define PORT
 const PORT = process.env.PORT || 8080;
 const app = new Koa();
-app.use(requests());
+// mongo db
+mongoose.connect("mongodb://localhost:27017/logging", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true, 
+  useFindAndModify: false,
+  useCreateIndex: true
+});
+app.use(Logger((str,args) => {
+  console.log("response",args[1]);
+}));
 app.use(cors());
 app.use(bodyParser());
-// mongoose.connect("mongodb://localhost:27017/logging", {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-//   useFindAndModify: false,
-//   useCreateIndex: true
-// });
+
 app.use(authRoute.routes());
 app.use(postRoute.routes());
 app.use(comentarRoute.routes());
