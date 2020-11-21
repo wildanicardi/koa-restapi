@@ -159,7 +159,7 @@ exports.searchTitle = async(ctx) => {
   }
  
 }
-exports.filterPost = async(ctx) => {
+exports.filterPostComentar = async(ctx) => {
   const {title} = ctx.request.query;
   try {
     let post = await Post.findAll({
@@ -183,6 +183,41 @@ exports.filterPost = async(ctx) => {
       status:"success",
       data: post,
     };
+  } catch (error) {
+    ctx.status = StatusCodes.BAD_REQUEST;
+    return ctx.body = {
+      message: error.message,
+    };
+  }
+ 
+}
+exports.shortPost = async(ctx) => {
+  const {sort_by,order_by} = ctx.request.query;
+  console.log("sort",sort_by);
+  console.log("order",order_by);
+  try {
+    if (sort_by === 'username') {
+      const post = await Post.findAll({
+        include:['comentar','user'],
+        order:[["user",sort_by,order_by]]
+      });
+      ctx.status = StatusCodes.OK;
+      return ctx.body = {
+        status:"success",
+        data: post,
+      };
+    } else {
+      const post = await Post.findAll({
+        include:['comentar','user'],
+        order:[[sort_by,order_by]]
+      });
+      ctx.status = StatusCodes.OK;
+      return ctx.body = {
+        status:"success",
+        data: post,
+      };
+    }
+    
   } catch (error) {
     ctx.status = StatusCodes.BAD_REQUEST;
     return ctx.body = {

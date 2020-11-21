@@ -32,14 +32,14 @@ mongoose.connect("mongodb://localhost:27017/logging", {
 });
 
 app.use(Logger((str,args) => { 
-  console.log("response",args);
+  // console.log("response",args);
   Logging.create({
       path:args[2],
       method:args[1],
       ttl:args[4],
       response:args[3]
-  }).then((result) => {
-    console.log(result);
+  }).then(() => {
+    console.log("save logging success");
   }).catch((err) => {
     console.log("error save logging " , err.message);
   });
