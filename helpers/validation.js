@@ -1,6 +1,6 @@
 const Joi = require("joi");
 const {
-  User,Post
+  User
 } = require("../models");
 const {
   StatusCodes
@@ -37,15 +37,15 @@ exports.findByCredentials = async ({
     }
   });
   if (!user) {
-    ctx.status = StatusCodes.BAD_REQUEST;
-    return ctx.body={
+    return ctx.body = {
+      status:StatusCodes.BAD_REQUEST,
       message: "email is wrong"
     };
   }
   const validPass = await bcrypt.compare(password, user.password);
   if (!validPass) {
-    ctx.status =StatusCodes.BAD_REQUEST;
-      return ctx.body={
+    return ctx.body = {
+      status:StatusCodes.BAD_REQUEST,
       message: "Password is Wrong"
     };
   }

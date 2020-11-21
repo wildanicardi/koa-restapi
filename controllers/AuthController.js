@@ -110,7 +110,7 @@ exports.login  = async (ctx) => {
     ctx.status = StatusCodes.OK;
     return ctx.body = {
       status: "success",
-      "message":"Login Success",
+      message:"Login Success",
       token:token
     };
   } catch (error) {
